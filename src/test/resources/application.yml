@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    name: dataSource
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:exam;MODE=MySQL;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;INIT=CREATE SCHEMA IF NOT EXISTS exam
+    username: sa
+    password: 123456
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.H2Dialect
