@@ -1,6 +1,7 @@
 package com.tw.exam.darkhorse.api.request;
 
 import com.sun.istack.NotNull;
+import com.tw.exam.darkhorse.domain.model.OrderModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,6 +25,14 @@ public class CreateOrderRequest {
     private Long goodsId;
 
     @NotNull
-    @Pattern(regexp = "(wechat|applepay|alipay|redenvelopepay|unionpay)")
+    @Pattern(regexp = "(wechat|alipay|redenvelopepay|unionpay)")
     private String payType;
+
+    public OrderModel of() {
+        return OrderModel.builder()
+                .price(price)
+                .addressId(addressId)
+                .goodsId(goodsId)
+                .build();
+    }
 }

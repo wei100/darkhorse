@@ -9,4 +9,4 @@ docker run \
     -e character-set-server=utf8mb4\
     -e collation-server=utf8mb4_unicode_ci\
     --mount type=bind,source=`pwd`/conf/mysqld.cnf,target=/etc/mysql/mysql.conf.d/mysqld.cnf \
-    mysql:5.7
+    mysql:latest

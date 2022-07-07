@@ -1,8 +1,8 @@
 package com.tw.exam.darkhorse.infrastructure.repository;
 
 import com.tw.exam.darkhorse.common.MockOrder;
-import com.tw.exam.darkhorse.domain.model.Order;
 import com.tw.exam.darkhorse.DarkHorseApplication;
+import com.tw.exam.darkhorse.infrastructure.repository.entity.Order;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class OrderRepositoryTest implements MockOrder {
     }
 
     /**
-     * Create Order API - AC1 - Example1-Task1
+     * Story1 - AC1 - Example1 - Task1
      */
     @Test
     public void should_return_saved_order_when_save_order() {

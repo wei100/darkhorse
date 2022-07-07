@@ -24,7 +24,7 @@ public class BizExceptionHandler {
 
     @ExceptionHandler(value = {BusinessException.class})
     public ResponseEntity bizExceptionHandler(BusinessException e) {
-        log.error("User biz exception, error = {}, error message = {}", e, e.getMessage());
+        log.error("biz exception, error = {}, error message = {}", e, e.getMessage());
         return new ResponseEntity(new ErrorResponse(e), e.getHttpStatus());
     }
 

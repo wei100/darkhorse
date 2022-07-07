@@ -11,9 +11,15 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PaymentResponse {
+public class OrderRefundResponse {
 
-    private String code;
+    private Long id;
 
-    private  String message;
+    private Double price;
+
+    private Long orderId;
+
+    private String status;
+
+    private LocalDateTime createdAt;
 }

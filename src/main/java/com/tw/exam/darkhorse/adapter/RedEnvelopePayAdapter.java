@@ -2,7 +2,7 @@ package com.tw.exam.darkhorse.adapter;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.tw.exam.darkhorse.domain.model.RedEnvelope;
+import com.tw.exam.darkhorse.domain.model.OrderRefundModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -22,23 +22,22 @@ public class RedEnvelopePayAdapter implements PaymentAdapter {
     @Autowired
     RestTemplate restTemplate;
 
-    public List<RedEnvelope> getRedEnvelopes() {
+    public List<OrderRefundModel> getRedEnvelopes() {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
         HttpEntity <String> entity = new HttpEntity<>(headers);
 
         String body = restTemplate.exchange(url, HttpMethod.GET, entity, String.class).getBody();
         Gson gson = new Gson();
-        return gson.fromJson(body, new TypeToken<List<RedEnvelope>>(){}.getType());
+        return gson.fromJson(body, new TypeToken<List<OrderRefundModel>>(){}.getType());
     }
 
-    public RedEnvelope updateRedEnvelopes(RedEnvelope redEnvelope) {
+    public OrderRefundModel updateRedEnvelopes(OrderRefundModel orderRefundModel) {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        HttpEntity<RedEnvelope> entity = new HttpEntity<RedEnvelope>(redEnvelope, headers);
-
+        HttpEntity<OrderRefundModel> entity = new HttpEntity<OrderRefundModel>(orderRefundModel, headers);
         String body = restTemplate.exchange(url, HttpMethod.POST, entity, String.class).getBody();
         Gson gson = new Gson();
-        return gson.fromJson(body, RedEnvelope.class);
+        return gson.fromJson(body, OrderRefundModel.class);
     }
 }

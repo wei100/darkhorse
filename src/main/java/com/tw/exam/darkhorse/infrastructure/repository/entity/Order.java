@@ -1,5 +1,6 @@
-package com.tw.exam.darkhorse.domain.model;
+package com.tw.exam.darkhorse.infrastructure.repository.entity;
 
+import com.tw.exam.darkhorse.domain.model.OrderModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,4 +36,15 @@ public class Order {
     private String status;
 
     private LocalDateTime createdAt;
+
+    public Order of(OrderModel order) {
+        return Order.builder()
+                .id(order.getId())
+                .price(order.getPrice())
+                .addressId(order.getAddressId())
+                .goodsId(order.getGoodsId())
+                .payType(order.getPayType())
+                .status(order.getStatus())
+                .build();
+    }
 }

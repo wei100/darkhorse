@@ -1,45 +1,42 @@
 package com.tw.exam.darkhorse.domain.service;
 
 
-import com.tw.exam.darkhorse.api.request.CreateOrderRequest;
-import com.tw.exam.darkhorse.domain.model.Order;
-import com.tw.exam.darkhorse.infrastructure.repository.OrderRepository;
 import com.tw.exam.darkhorse.api.exception.BusinessException;
 import com.tw.exam.darkhorse.api.exception.ErrorCode;
+import com.tw.exam.darkhorse.domain.model.OrderModel;
+import com.tw.exam.darkhorse.infrastructure.apigateway.OrderApiGateway;
+import com.tw.exam.darkhorse.infrastructure.apigateway.request.OrderCalculateRequest;
+import com.tw.exam.darkhorse.infrastructure.apigateway.response.OrderCalculateResponse;
+import com.tw.exam.darkhorse.infrastructure.repository.OrderRepository;
+import com.tw.exam.darkhorse.infrastructure.repository.entity.Order;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class OrderService {
 
-    private final List<Long> addressIds = List.of(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L);
-
     private final OrderRepository orderRepository;
 
-    public Order createOrder(CreateOrderRequest request) {
-        if(addressIds.contains(request.getAddressId())) {
-            return orderRepository
-                    .save(Order.builder()
-                            .price(request.getPrice())
-                            .addressId(request.getAddressId())
-                            .goodsId(request.getGoodsId())
-                            .payType(request.getPayType())
-                            .status("NO_PAY")
-                            .createdAt(LocalDateTime.now())
-                            .build());
+    private final OrderApiGateway orderApiGateway;
+
+    public OrderModel save(OrderModel orderModel) {
+        Order order = null;
+        try {
+            OrderCalculateResponse response = orderApiGateway.calculate(OrderCalculateRequest.builder()
+                    .price(Double.parseDouble(orderModel.getPrice()))
+                    .addressId(orderModel.getAddressId())
+                    .goodsId(orderModel.getGoodsId())
+                    .build()
+            );
+            if (!response.getPrice().equals(Double.parseDouble(orderModel.getPrice()))) {
+                throw new BusinessException(HttpStatus.INTERNAL_SERVER_ERROR, ErrorCode.ORDER_PRICE_CHANGE_FAILURE);
+            }
+            order = orderRepository.save(orderModel.of());
+        } catch (Exception e) {
+            throw new BusinessException(HttpStatus.INTERNAL_SERVER_ERROR, ErrorCode.CALCULATE_FAILURE);
         }
-        throw new BusinessException(ErrorCode.ADDRESS_NOT_EXIST);
-    }
-
-    public void updateOrder(Order order) {
-        orderRepository.save(order);
-    }
-
-    public Order getOrderById(Long orderId) {
-        return orderRepository.findById(orderId).orElseThrow(() -> new BusinessException(ErrorCode.ORDER_NOT_EXIST));
+        return OrderModel.of(order);
     }
 }

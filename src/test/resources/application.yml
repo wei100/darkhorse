@@ -10,3 +10,16 @@ spring:
     hibernate:
       ddl-auto: create-drop
     database-platform: org.hibernate.dialect.H2Dialect
+
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: BASIC
+
+
+account-management:
+  url: https://f0708762-889e-4aaa-8d6e-99d0386b53de.mock.pstmn.io
